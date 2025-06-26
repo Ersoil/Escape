@@ -25,7 +25,6 @@ public class PlayerModel : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ќграничение максимальной скорости
         if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
@@ -34,7 +33,6 @@ public class PlayerModel : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // ѕровер€ем, если коллайдер принадлежит слою Ground
         if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
             isGrounded = true;
@@ -43,7 +41,6 @@ public class PlayerModel : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //  огда перестаем касатьс€ Ground, устанавливаем isGrounded в false
         if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
             isGrounded = false;

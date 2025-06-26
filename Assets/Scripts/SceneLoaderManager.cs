@@ -22,7 +22,6 @@ public class SceneLoaderManager : MonoBehaviour
 
     private IEnumerator Fade()
     {
-        // Затемнение
         float timer = 0f;
         while (timer < fadeDuration)
         {

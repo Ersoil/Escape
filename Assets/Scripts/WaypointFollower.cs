@@ -6,16 +6,16 @@ public class WaypointFollower : MonoBehaviour
 {
     public enum MovementType
     {
-        Loop,       // По кругу (1→2→3→1→2...)
-        PingPong,   // Туда-обратно (1→2→3→2→1...)
-        Once        // Один проход (1→2→3 и остановка)
+        Loop,       
+        PingPong,   
+        Once     
     }
 
     [Header("Waypoints")]
     public List<Vector2> waypoints = new List<Vector2>();
     public MovementType movementType = MovementType.Loop;
     public float movementSpeed = 3f;
-    public float reachThreshold = 0.1f; // Дистанция для смены точки
+    public float reachThreshold = 0.1f;
 
     [Header("Rotation Settings")]
     public bool rotateToDirection = true;
@@ -29,7 +29,6 @@ public class WaypointFollower : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // Если точек нет, используем текущую позицию как стартовую
         if (waypoints.Count == 0)
         {
             waypoints.Add(transform.position);
@@ -43,10 +42,8 @@ public class WaypointFollower : MonoBehaviour
         Vector2 targetPosition = waypoints[currentWaypointIndex];
         Vector2 moveDirection = (targetPosition - (Vector2)transform.position).normalized;
 
-        // Движение к точке
         rb.velocity = moveDirection * movementSpeed;
 
-        // Поворот в направлении движения (если включено)
         if (rotateToDirection && rb.velocity.magnitude > 0.1f)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
@@ -54,7 +51,6 @@ public class WaypointFollower : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        // Проверка достижения точки
         if (Vector2.Distance(transform.position, targetPosition) < reachThreshold)
         {
             GetNextWaypoint();
@@ -103,15 +99,13 @@ public class WaypointFollower : MonoBehaviour
                 }
                 else
                 {
-                    // Останавливаем движение при достижении последней точки
                     rb.velocity = Vector2.zero;
-                    enabled = false; // Отключаем скрипт
+                    enabled = false; 
                 }
                 break;
         }
     }
 
-    // Рисуем линии между точками в редакторе
     private void OnDrawGizmosSelected()
     {
         if (waypoints.Count > 0)

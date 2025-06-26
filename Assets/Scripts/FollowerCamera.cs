@@ -5,14 +5,14 @@ using UnityEngine;
 public class FollowerCamera : MonoBehaviour
 {
     [Header("Target Settings")]
-    [SerializeField] private Transform target; // Цель (ваш шар)
+    [SerializeField] private Transform target;
 
     [Header("Follow Settings")]
-    [SerializeField] private Vector2 followSpeeds = new Vector2(5f, 3f); // Разные скорости для X и Y
-    [SerializeField] private float smoothTime = 0.3f; // Параметр плавности
+    [SerializeField] private Vector2 followSpeeds = new Vector2(5f, 3f);
+    [SerializeField] private float smoothTime = 0.3f;
 
     [Header("Look Ahead Settings")]
-    [SerializeField] private bool lookAhead = true; // Смотреть вперед по движению
+    [SerializeField] private bool lookAhead = true; 
     [SerializeField] private float lookAheadDistance = 2f;
     [SerializeField] private float lookAheadSpeed = 1f;
 
@@ -37,7 +37,6 @@ public class FollowerCamera : MonoBehaviour
             targetRb = target.GetComponent<Rigidbody2D>();
         }
 
-        // Инициализация камеры с позицией цели
         if (target != null)
         {
             transform.position = new Vector3(
@@ -57,16 +56,13 @@ public class FollowerCamera : MonoBehaviour
 
         if (target == null) return;
 
-        // Базовое положение камеры (над целью)
         targetPosition = target.position;
-        targetPosition.z = transform.position.z; // Сохраняем Z-координату камеры
+        targetPosition.z = transform.position.z; 
 
-        // Если включен lookAhead, добавляем смещение в направлении движения
         if (lookAhead && targetRb != null)
         {
             Vector2 currentVelocity = targetRb.velocity;
 
-            // Рассчитываем смещение только если объект движется
             if (currentVelocity.magnitude > 0.1f)
             {
                 Vector2 targetLookAhead = currentVelocity.normalized * lookAheadDistance;
@@ -88,14 +84,12 @@ public class FollowerCamera : MonoBehaviour
             targetPosition += lookAheadOffset;
         }
 
-        // Ограничение области камеры
         if (useBounds)
         {
             targetPosition.x = Mathf.Clamp(targetPosition.x, minBounds.x, maxBounds.x);
             targetPosition.y = Mathf.Clamp(targetPosition.y, minBounds.y, maxBounds.y);
         }
 
-        // Плавное перемещение камеры с разными скоростями для осей и эффектом "мягкости"
         float posX = Mathf.SmoothDamp(
             transform.position.x,
             targetPosition.x,
@@ -113,7 +107,6 @@ public class FollowerCamera : MonoBehaviour
         transform.position = new Vector3(posX, posY, transform.position.z);
     }
 
-    // Метод для установки границ камеры (можно вызывать из других скриптов)
     public void SetBounds(Vector2 min, Vector2 max)
     {
         minBounds = min;
@@ -121,13 +114,11 @@ public class FollowerCamera : MonoBehaviour
         useBounds = true;
     }
 
-    // Метод для временного отключения границ
     public void DisableBounds()
     {
         useBounds = false;
     }
 
-    // Для визуализации границ в редакторе
     private void OnDrawGizmosSelected()
     {
         if (useBounds)

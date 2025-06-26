@@ -14,10 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Получаем ввод от игрока
         moveInput = Input.GetAxis("Horizontal");
 
-        // Обработка прыжка
         if (Input.GetButtonDown("Jump"))
         {
             ballModel.Jump();
@@ -26,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Применяем движение в FixedUpdate для корректной физики
         ballModel.Move(moveInput);
     }
 }

@@ -26,7 +26,6 @@ public class TextMassage : MonoBehaviour
         }
     }
 
-    // Для запуска эффекта вручную
     public void StartTyping()
     {
         fullText = newText;

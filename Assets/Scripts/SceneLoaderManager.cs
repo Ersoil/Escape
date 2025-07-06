@@ -3,39 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class SceneLoaderManager : MonoBehaviour
 {
-    public Image fadeImage;
-    public float fadeDuration = 1f;
+    public GameObject loadingScreen;
+    public Slider progressBar;
+    public TextMeshProUGUI text;
+
     public void ReloadCurrentScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        if (progressBar == null && text == null) SceneManager.LoadScene(currentSceneIndex);
+        else StartCoroutine(LoadAsync(currentSceneIndex));
     }
 
     public void NextScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex+1);
+        if (progressBar == null && text == null) SceneManager.LoadScene(currentSceneIndex+1);
+        else StartCoroutine(LoadAsync(currentSceneIndex+1));
     }
 
-    private IEnumerator Fade()
-    {
-        float timer = 0f;
-        while (timer < fadeDuration)
-        {
-            timer += Time.deltaTime;
-            float alpha = Mathf.Lerp(0f, 1f, timer / fadeDuration);
-            fadeImage.color = new Color(0, 0, 0, alpha);
-            yield return null;
-        }
-    }
     public void GameOut()
     {
         Application.Quit();
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #endif
+    }
+
+    private IEnumerator LoadAsync(int currentSceneIndex)
+    {
+        var AsyncLoad = SceneManager.LoadSceneAsync(currentSceneIndex);
+        loadingScreen.SetActive(true);
+        while (!AsyncLoad.isDone)
+        {
+            progressBar.value = AsyncLoad.progress;
+            yield return null;
+        }
     }
 }

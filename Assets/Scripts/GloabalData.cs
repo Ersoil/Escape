@@ -10,7 +10,7 @@ public class GloabalData : MonoBehaviour
     [SerializeField] private float _currentTime = 0f;
     [SerializeField] private TextMeshProUGUI _timeText;
     [SerializeField] private TextMeshProUGUI _levelText;
-    [SerializeField] private TextMeshProUGUI _end;
+    [SerializeField] private GameObject _end;
     [SerializeField] private Slider _energySlider;
 
     [Header("Settings")]
@@ -61,16 +61,16 @@ public class GloabalData : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        float energyPercentage = 1 - (_currentTime / _maxTime);
+        float energyPercentage = 1 - (_currentTime*_energyDrainSpeed/ _maxTime);
         _energySlider.value = Mathf.Clamp(energyPercentage, 0f, 1f);
     }
     private void ShowEnd()
     {
-        _end.enabled = true;
+        _end.SetActive(true);
     }
     private void TimeExpired()
     {
+        ShowEnd();
         Debug.Log("Время вышло!");
-       
     }
 }

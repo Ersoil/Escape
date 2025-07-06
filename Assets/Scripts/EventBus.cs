@@ -8,4 +8,8 @@ public class EventBus : MonoBehaviour
     public UnityEvent onPlayerDeath;
     public UnityEvent onPlayerWinLevel;
     public UnityEvent onTimeEnd;
+    public void invPlayerDeath()
+    {
+        onPlayerDeath?.Invoke();
+    }
 }

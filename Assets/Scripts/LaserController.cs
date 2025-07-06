@@ -9,6 +9,7 @@ public class LaserController : MonoBehaviour
     [SerializeField] PlayerController playerControll;
     [SerializeField] PlayerModel player;
     private float moveInput;
+    private float _energyLifetime;
 
     private void OnEnable()
     {
@@ -30,12 +31,19 @@ public class LaserController : MonoBehaviour
     private void Update()
     {
         moveInput = Input.GetAxis("Horizontal");
+        _energyLifetime -= Time.deltaTime;
+        _energyLifetime =  Mathf.Clamp(_energyLifetime, 0, 0.3f);
 
-        if (Input.GetButtonDown("Jump"))
+        Debug.Log(_energyLifetime);
+        if (Input.GetButtonDown("Jump") || _energyLifetime <= 0)
         {
             this.enabled = false;
         }
 
+    }
+    public void AddEnergy()
+    {
+        _energyLifetime += 1;
     }
 
     private void FixedUpdate()

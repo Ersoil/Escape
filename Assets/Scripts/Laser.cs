@@ -46,6 +46,7 @@ public class Laser : MonoBehaviour
                 {
                     LaserTrigg.LaserEntered();
                 }
+
                 if (hitInfo.collider.CompareTag("Mirror"))
                 {
                     mirrorHitPoint = (Vector2)hitInfo.point;

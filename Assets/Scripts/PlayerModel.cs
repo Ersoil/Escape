@@ -8,7 +8,11 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float moveForce = 10f;
     [SerializeField] private float jumpForce = 7f;
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float coiotTime = 0.5f;
+    private float jumpTime;
+    private bool isJumpAhead;
+    public float maxSpeed = 5f;
+
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
@@ -16,16 +20,32 @@ public class PlayerModel : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
     private Collider2D ballCollider;
+    
 
     private void Awake()
     {
+        jumpTime = coiotTime;
         rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<Collider2D>();
     }
-
+    private void Update()
+    {
+        jumpTime -= Time.deltaTime;
+        Debug.Log($"Coiot time:{jumpTime}");
+        if (isJumpAhead && jumpTime > 0)
+        {
+            if (isGrounded)
+            {
+                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                isJumpAhead = false;
+                jumpTime = 0;
+            }
+            
+        }
+    }
     private void FixedUpdate()
     {
-        if (rb.velocity.magnitude > maxSpeed)
+        if (rb.velocity.magnitude > maxSpeed )
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
         }
@@ -57,10 +77,8 @@ public class PlayerModel : MonoBehaviour
 
     public void Jump()
     {
-        if (isGrounded)
-        {
-            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-        }
+        isJumpAhead = true;
+        jumpTime = coiotTime;
     }
 
     public bool IsGrounded()

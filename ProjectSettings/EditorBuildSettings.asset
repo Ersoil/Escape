@@ -15,12 +15,40 @@ EditorBuildSettings:
     path: Assets/Scenes/Core.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Cooridor.unity
-    guid: 7b3d8e83684393945a731bdde2f7a8d4
-  - enabled: 1
-    path: Assets/Scenes/TestingRoom1.unity
-    guid: 5d07f2f9be668a3488c26d2a52fe47b4
-  - enabled: 1
     path: Assets/Scenes/Ending 1.unity
     guid: c5caebc80403a7b49be36d026cb1fb09
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Scenes/Template 1.unity
+    guid: 68fbcc00d42e31344a11728bfe22fce4
+  - enabled: 1
+    path: Assets/Scenes/Template 2.unity
+    guid: d17318f82d1185d4daa17be88f8d5d75
+  - enabled: 1
+    path: Assets/Scenes/Template 3.unity
+    guid: 58f0c2df832eb2748aff3feed7a789be
+  - enabled: 1
+    path: Assets/Scenes/Template 4.unity
+    guid: de00dada99654d8439422ae2b4cb29d2
+  - enabled: 1
+    path: Assets/Scenes/Template 5.unity
+    guid: 344640069d482ac48a4be9139ad23f8a
+  - enabled: 1
+    path: Assets/Scenes/Template 6.unity
+    guid: e7e7cbe1790a74a47a72fbaeff209424
+  - enabled: 1
+    path: Assets/Scenes/lk6.unity
+    guid: 7b3d8e83684393945a731bdde2f7a8d4
+  - enabled: 1
+    path: Assets/Scenes/Template 7.unity
+    guid: 78a63e2860e176b408a135fbc1d0de18
+  - enabled: 1
+    path: Assets/Scenes/Template 8.unity
+    guid: ad553dade1341364198be36f85d7c267
+  - enabled: 1
+    path: Assets/Scenes/Template 9.unity
+    guid: eacdba93f44263a489daa0ab1371e3d6
+  - enabled: 1
+    path: Assets/Scenes/Ending 2.unity
+    guid: 2e4ed2577c54f1546906c63a7e692abd
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: cd14ecf987f34ae48874367a1faa83f2, type: 3}

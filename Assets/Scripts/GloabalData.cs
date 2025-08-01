@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
@@ -11,12 +13,14 @@ public class GloabalData : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timeText;
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private GameObject _end;
+    [SerializeField] private GameObject _pause;
     [SerializeField] private Slider _energySlider;
-
+    public static Action onEnergyEnd;
     [Header("Settings")]
     [SerializeField] private float _energyDrainSpeed = 1f;
     [SerializeField] private bool _countDown = true;
-
+    public static Action onExitPressed;
+    public  UnityEvent onAdShow;
     private static GameObject instance;
 
     private void Awake()
@@ -24,6 +28,7 @@ public class GloabalData : MonoBehaviour
         if (instance == null)
         {
             instance = this.gameObject;
+            SceneLoaderManager.onAdShow += ShowAd;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -31,7 +36,18 @@ public class GloabalData : MonoBehaviour
             Destroy(gameObject); 
         }
     }
-
+    public void ActivatePause()
+    {
+        _pause.SetActive(true);
+    }
+    public void ExitPressed()
+    {
+        onExitPressed?.Invoke();
+    }
+    public void DestroyHud()
+    {
+        Destroy(this.gameObject);
+    }
     private void Update()
     {
         
@@ -49,7 +65,15 @@ public class GloabalData : MonoBehaviour
             TimeExpired();
         }
     }
-
+    private void OnDestroy()
+    {
+        SceneLoaderManager.onAdShow -= ShowAd;
+    }
+    public void ShowAd()
+    {
+        _pause.SetActive(true);
+        onAdShow?.Invoke();
+    }
     private void UpdateTimeDisplay()
     {
         int minutes = Mathf.FloorToInt(_currentTime / 60f);
@@ -67,6 +91,7 @@ public class GloabalData : MonoBehaviour
     private void ShowEnd()
     {
         _end.SetActive(true);
+        onEnergyEnd?.Invoke();
     }
     private void TimeExpired()
     {

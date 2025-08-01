@@ -9,7 +9,6 @@ public class FollowerCamera : MonoBehaviour
 
     [Header("Follow Settings")]
     [SerializeField] private Vector2 followSpeeds = new Vector2(5f, 3f);
-    [SerializeField] private float smoothTime = 0.3f;
 
     [Header("Look Ahead Settings")]
     [SerializeField] private bool lookAhead = true; 
@@ -18,8 +17,8 @@ public class FollowerCamera : MonoBehaviour
 
     [Header("Camera Bounds")]
     [SerializeField] private bool useBounds = false;
-    [SerializeField] private Vector2 minBounds;
-    [SerializeField] private Vector2 maxBounds;
+    [SerializeField] private GameObject minBounds;
+    [SerializeField] private GameObject maxBounds;
 
     private Vector3 targetPosition;
     private Vector3 lookAheadOffset;
@@ -46,15 +45,21 @@ public class FollowerCamera : MonoBehaviour
             );
         }
     }
-
-    private void Update()
+    public void setTarget(GameObject target)
     {
+        targetRb = target.GetComponent<Rigidbody2D>();
+        this.target = target.transform;
+    }
+    private void LateUpdate()
+    {
+        
         if (isSetingField)
         {
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, setField, Time.deltaTime * 0.5f);
         }
 
         if (target == null) return;
+        if (Time.timeScale == 0f) return;
 
         targetPosition = target.position;
         targetPosition.z = transform.position.z; 
@@ -86,32 +91,25 @@ public class FollowerCamera : MonoBehaviour
 
         if (useBounds)
         {
-            targetPosition.x = Mathf.Clamp(targetPosition.x, minBounds.x, maxBounds.x);
-            targetPosition.y = Mathf.Clamp(targetPosition.y, minBounds.y, maxBounds.y);
+            targetPosition.x = Mathf.Clamp(targetPosition.x, minBounds.transform.position.x, maxBounds.transform.position.x);
+            targetPosition.y = Mathf.Clamp(targetPosition.y, minBounds.transform.position.y, maxBounds.transform.position.y);
         }
 
         float posX = Mathf.SmoothDamp(
             transform.position.x,
             targetPosition.x,
             ref velocity.x,
-            smoothTime / followSpeeds.x
+            0
         );
 
         float posY = Mathf.SmoothDamp(
             transform.position.y,
             targetPosition.y,
             ref velocity.y,
-            smoothTime / followSpeeds.y
+            0
         );
 
         transform.position = new Vector3(posX, posY, transform.position.z);
-    }
-
-    public void SetBounds(Vector2 min, Vector2 max)
-    {
-        minBounds = min;
-        maxBounds = max;
-        useBounds = true;
     }
 
     public void DisableBounds()
@@ -125,18 +123,19 @@ public class FollowerCamera : MonoBehaviour
         {
             Gizmos.color = Color.green;
             Vector3 center = new Vector3(
-                (minBounds.x + maxBounds.x) * 0.5f,
-                (minBounds.y + maxBounds.y) * 0.5f,
+                (maxBounds.transform.position.x + minBounds.transform.position.x) * 0.5f,
+                (maxBounds.transform.position.y + minBounds.transform.position.y) * 0.5f,
                 0
             );
             Vector3 size = new Vector3(
-                maxBounds.x - minBounds.x,
-                maxBounds.y - minBounds.y,
+                maxBounds.transform.position.x - minBounds.transform.position.x,
+                maxBounds.transform.position.y - minBounds.transform.position.y,
                 1
             );
             Gizmos.DrawWireCube(center, size);
         }
     }
+
     public void setCameraFieldOfView(float field)
     {
         isSetingField = true;

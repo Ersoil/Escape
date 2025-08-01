@@ -283,8 +283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints:
-  - {x: 66.84346, y: -5.374586}
-  - {x: 66.84346, y: -1}
+  - {fileID: 0}
+  - {fileID: 0}
   movementType: 0
   movementSpeed: 0.5
   reachThreshold: 0.1
@@ -353,7 +353,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.3359375, y: 0.228125}
+    oldSize: {x: 2.336, y: 0.22812499}
     newSize: {x: 2.3359375, y: 0.228125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1237,7 +1237,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5db42f109a822924ab216db2b696c3c1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ac45380a8af44a345a59c94170e48fba, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

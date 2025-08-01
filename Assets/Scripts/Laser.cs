@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Laser : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Laser : MonoBehaviour
     [SerializeField] int reflections;
     [SerializeField] float maxRayDistance;
     [SerializeField] LayerMask layerDetection;
+    public UnityEvent OnPlayerLasered;
 
     private void Start()
     {
@@ -51,7 +53,8 @@ public class Laser : MonoBehaviour
                 {
                     mirrorHitPoint = (Vector2)hitInfo.point;
                     mirrorHitNormal = (Vector2)hitInfo.normal;
-                    hitInfo = Physics2D.Raycast(mirrorHitPoint, Vector2.Reflect(mirrorHitPoint, mirrorHitNormal), maxRayDistance, layerDetection);
+                    Vector2 incomingDirection = (hitInfo.point - (Vector2)transform.position).normalized;
+                    hitInfo = Physics2D.Raycast(mirrorHitPoint, Vector2.Reflect(incomingDirection, mirrorHitNormal), maxRayDistance, layerDetection);
                     isMirror = true;
                 }
                 else

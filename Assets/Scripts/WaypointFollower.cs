@@ -12,7 +12,7 @@ public class WaypointFollower : MonoBehaviour
     }
 
     [Header("Waypoints")]
-    public List<Vector2> waypoints = new List<Vector2>();
+    public List<GameObject> waypoints = new List<GameObject>();
     public MovementType movementType = MovementType.Loop;
     public float movementSpeed = 3f;
     public float reachThreshold = 0.1f;
@@ -31,15 +31,18 @@ public class WaypointFollower : MonoBehaviour
 
         if (waypoints.Count == 0)
         {
-            waypoints.Add(transform.position);
+            waypoints.Add(this.gameObject);
         }
     }
-
+    private void OnDisable()
+    {
+        rb.velocity = Vector2.zero;
+    }
     private void FixedUpdate()
     {
         if (waypoints.Count <= 1) return;
 
-        Vector2 targetPosition = waypoints[currentWaypointIndex];
+        Vector2 targetPosition = waypoints[currentWaypointIndex].transform.position;
         Vector2 moveDirection = (targetPosition - (Vector2)transform.position).normalized;
 
         rb.velocity = moveDirection * movementSpeed;
@@ -113,14 +116,14 @@ public class WaypointFollower : MonoBehaviour
             Gizmos.color = Color.cyan;
             for (int i = 0; i < waypoints.Count; i++)
             {
-                Gizmos.DrawSphere(waypoints[i], 0.2f);
+                Gizmos.DrawSphere(waypoints[i].transform.position, 0.2f);
                 if (i < waypoints.Count - 1)
                 {
-                    Gizmos.DrawLine(waypoints[i], waypoints[i + 1]);
+                    Gizmos.DrawLine(waypoints[i].transform.position, waypoints[i + 1].transform.position);
                 }
                 else if (movementType == MovementType.Loop)
                 {
-                    Gizmos.DrawLine(waypoints[i], waypoints[0]);
+                    Gizmos.DrawLine(waypoints[i].transform.position, waypoints[0].transform.position);
                 }
             }
         }

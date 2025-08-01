@@ -5,10 +5,14 @@ using UnityEngine.Events;
 
 public class TriggerEvent : MonoBehaviour
 {
+    public string Tag;
     public UnityEvent Triggered;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("TriggerEvent");
-        Triggered?.Invoke();
+        if (other.CompareTag(Tag))
+        {
+            Debug.Log("TriggerEvent");
+            Triggered?.Invoke();
+        }
     }
 }

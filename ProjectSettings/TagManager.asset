@@ -7,6 +7,7 @@ TagManager:
   - Mirror
   - Trigger
   - HUD
+  - Occluder Static
   layers:
   - Default
   - TransparentFX
